@@ -1,0 +1,12 @@
+object ArrayOps {
+  def main(args: Array[String]): Unit = {
+    
+    val array = new Array[Int](5) //此方法创建数组需要写明数组类型以及数组的固定长度  -->  “ new Array[Int](5) ”
+   // array(5) = 10 //对数组访问的时候，数组下标从0开始，最长长度不能超过“ length-1 ”，该数组赋值下标越界 会报错 “ java.lang.ArrayIndexOutOfBoundsException ”
+    for(item <- array) println("item -->  " + item)
+    
+    val array1 = Array(1,2,3,4,5) //此方法创建数组已经给出参数，因为Scala有自动推导类型的方法，所以可以不用书写该数组的类型
+    array1(1) = 20
+    for(item1 <- array1) println("item1 -->  " + item1)
+  }
+}
