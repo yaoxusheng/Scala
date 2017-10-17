@@ -3,10 +3,54 @@ object ArrayOps {
     
     val array = new Array[Int](5) //此方法创建数组需要写明数组类型以及数组的固定长度  -->  “ new Array[Int](5) ”
    // array(5) = 10 //对数组访问的时候，数组下标从0开始，最长长度不能超过“ length-1 ”，该数组赋值下标越界 会报错 “ java.lang.ArrayIndexOutOfBoundsException ”
+    
+    //获取该数组下标： “ a <- 0 until array.length ” ， 动态给该数组进行赋值
+    for(a <- 0 until array.length){
+      println("第一下标： -->  " + a)
+      array(a) = a+10
+    }
+    
     for(item <- array) println("item -->  " + item)
     
     val array1 = Array(1,2,3,4,5) //此方法创建数组已经给出参数，因为Scala有自动推导类型的方法，所以可以不用书写该数组的类型
     array1(1) = 20
     for(item1 <- array1) println("item1 -->  " + item1)
+    
+    //创建ArrayBuffer（可变）数组，需要导入Scala的：“ import scala.collection.mutable.ArrayBuffer ”
+    import scala.collection.mutable.ArrayBuffer
+    //没有给予赋初始值的情况下，要指定该数组的类型
+    val arrayBuffer = new ArrayBuffer[Int]()
+    //给可变数组赋值
+    arrayBuffer += (1,2,3,4,5,6,7,8,9,10)
+    
+    //for增强循环获取该数组内的值
+    for(a <- arrayBuffer) println("arrayBuffer -- >  "+a)
+    
+    //得到数组下标
+    for(a <- 0 until arrayBuffer.length) println("arrayBuffer1--value -- >  " + arrayBuffer(a) + "  下标： -- >  " + a)
+    println
+    
+    //数组下标反转
+    for(a <- (0 until arrayBuffer.length).reverse) println("arrayBuffer1--value -- >  " + arrayBuffer(a) + "  下标： -- >  " + a)
+    
+    //设置数组出现的间隔
+    for(a <- 0 until (arrayBuffer.length,3)) println("a <- 0 until (arrayBuffer.length,3)  下标：-->  " + a + "  value  -->  " + arrayBuffer(a))
+    println
+    
+    //数组求和、最大值、最小值
+    println("sum  -- >  " + arrayBuffer.sum)
+    println("max  -- >  " + arrayBuffer.max)
+    println("max  -- >  " + arrayBuffer.min)
+    
+    //数组排序-- > 升序
+    //调用 util下的quickSort
+    scala.util.Sorting.quickSort(array)
+    //循环 “ 获取 ” 数组的值
+    for(a <- array)println("quickSort  -- >  " + a)
+    //“ 显示 ” 数组的内容，“ sep：String ”：设置数组内多个值时用什么来分隔
+    println("mkString -- >  " + array.mkString(","))
+    //mkString有多个重载方法，“ start，sep，end ”：数组内有多个值，显示时同行的开头和末尾用什么来括起来，中间用什么来分隔；如：“ "《 ", ",", " 》" ” --> 显示：“ 《 10,11,12,13,14 》 ”
+    println("mkString -- >  " + array.mkString("《 ", ",", " 》"))
+ 
   }
 }
