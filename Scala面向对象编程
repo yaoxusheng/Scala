@@ -1,0 +1,83 @@
+/**
+ * 正统的创建实例的方法：
+ * 	1.创建同名的class
+ *  2.在object中定义apply方法，在apply方法中new ClassName
+ *  3.在main中直接使用ClassName()方法
+ * 这样所得的结果是在main中调用了同名class中的内容
+ */
+
+//在同名class中传入参数
+class HelloOOP(age: Int){
+  //没有实例的情况下，同名的Class可以直接调用Object中的参数/函数
+  println("Object HelloOOP的name1可变变量 -- > " + HelloOOP.name1)
+  
+  //没有实例的情况下，同名的Class可以直接调用Object中的参数/方法
+  HelloOOP.sayBye 
+  println("调用number " + HelloOOP.number)
+  
+  val name = "爸爸"
+  def sayHello = println("Hi,My name is " + name + ". I'm is " + age + " years old.")
+ 
+  def son(son:String) = println("I'm " + son + ". " + name + ", Who is my mather ? ")
+ 
+ //附加
+ def aa = {
+    import scala.collection.mutable.ArrayBuffer
+    val array = new ArrayBuffer[Int]()
+    array += (1,2,3,4,5,6,7,8,9)
+    
+    /*println("mkString -->  " + array.mkString(","))
+    for(a <- (0 until array.length).reverse){
+      println("until --> 下标：" + a + "   " + array(a))
+    }
+    
+    println
+    for(a <- 0 to array.length - 1){
+      println("to  -->  value：" + array(a))
+    }*/
+  }
+  
+}
+
+object HelloOOP {
+  
+  //在 Object HelloOOP中定义一个可变变量，供同名Class做实验调用
+  var name1 = "Zhang san"
+  
+  def sayBye = println(name1 + ",GoodBye,see you 明天 ！")
+  
+  var number = 0
+  
+  def main(args: Array[String]): Unit = {
+    println("Hello go out !")
+    
+    val hello = HelloOOP()
+    
+    //创同名Class的实例
+   // val hello = new HelloOOP
+    
+    //用实例调用 Class HelloOOP中的sayHello函数
+    hello.sayHello
+    
+    /*for(a <- 1 until (10-1,2)){
+    	hello.son("儿子" + a)
+    	
+    	println(a)
+    }*/
+    
+    //调用同名Class中的附加函数
+   hello.aa
+  }  
+  
+  //在object中可以定义多个apply方法，定义创建于实例化object同名的class的方法
+  def apply():HelloOOP = {
+    new HelloOOP(20)
+  }
+  
+  //定义一个创建于实例化object同名的class的方法
+  def apply(age: Int): HelloOOP = {
+    println(" Number is " + number)
+    number += 1
+    new HelloOOP(age: Int)
+}
+}
