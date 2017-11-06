@@ -1,0 +1,107 @@
+/**
+ * Scala 模式匹配：
+ * 		1、Scala的模式匹配格式：
+ * 				变量 match{
+ * 						case 值 => 函数体/执行语句
+ * 						case 值 => 函数体/执行语句
+ * 						case 值 => 函数体/执行语句
+ * 								}
+ * 
+ * 		2、类似于java中的“ switch case ”，Scala中的模式匹配可以匹配：值、类型、类
+ */
+
+class DataFrameWork
+case class ComputationFrameWork(name: String, popular: Boolean) extends DataFrameWork
+case class StorageFrameWork(name: String, popular: Boolean) extends DataFrameWork
+
+object patternMatch {
+  def main(args: Array[String]): Unit = {
+   // getSalary("Scala1")  -->  单个值匹配
+   // getSalary("那么", 100)  //调用getSalary方法，并传入参数
+   // getMatchType("Zhangsan")  //调用getMatchType方法，并传入参数
+   // getMatchCollection(Array(""))  //调用getMatchCollection方法，并传入参数
+  //  getBigDataType(ComputationFrameWork("Scala",false))   //调用getBigDataType方法，并传入类和参数
+  //  getBigDataType(StorageFrameWork("Scala",true))    //调用getBigDataType方法，并传入类和参数
+    getValue("Spark",Map("Spark" -> "This is true"))    //调用getValue方法，并参数
+    getValue("Spark1",Map("Spark" -> "This is true"))    //调用getValue方法，并参数
+  }
+  
+  /**
+   * 1、对变量进行匹配：
+   * 		case到匹配的变量值后，将会运行“ => ”后面的语句
+   * 		模式匹配格式：match{case}
+   */
+  def getSalary(name: String, age: Int){
+    name match{  //模式匹配格式：match{case}
+      case "Spark" => println(name + ": case1 匹配成功！")
+      case "Scala" => println(name + ": case2 匹配成功！")
+      case _ if name == "HA" => println(name + ": 其他if匹配 : " + age)   //当传入的变量是其他值时，再对name进行匹配
+      case _ if name == "Mu" && age ==5  => println(name + ": 其他if && 匹配 : " + age)   //当传入的变量是其他值时，再对name和age进行匹配，当两个条件同时满足是执行后面语句
+      case _ if age >= 15 => println(name + ": 其他if >= 匹配 : " + age)   //当传入的变量是其他值时，再对age进行匹配
+      case _name if age <= 18 => println("_name : " + name + ",age : " + age)
+      case _ => println(name + ": 其他变量匹配成功！")  //"_"代表其他变量
+    }
+  }
+//---------------------------------------------------------------------------------------------------
+  
+  /**
+   * 2、对类型进行匹配：
+   * 		一、在case语句上定义变量并赋予类型，当传入的值可以赋值给这个类型的变量时，那么传入的变脸类型就和定义的变量类型匹配成功了，然后根据定义的语法执行函数体/语句，案例如下：
+   * 				def getMatchType(name: Any){
+   * 						name match{
+   * 									case s: String => println(s + " is String!")
+   * 											}
+   * 							}
+   *		二、“_”代表其他类型的匹配
+   */
+  def getMatchType(name: Any){
+    name match{
+      case i: Int => println(i + " is Integer!")  //
+      case d: Double => println(d + " is Double!")
+      case s: String if name == "Zhangsan" => println(s + " is String!")    //匹配：如果传入的值是字符串（String）类型并且值内容是“Zhansgan”，那么就执行后面的语句
+      case _ => println(name + " Unknow type")
+    }
+  }
+//---------------------------------------------------------------------------------------------------
+  
+  /**
+   * 3、对数组进行匹配
+   * 		一、通过调用getMatchCollection方法，对传入的数组和参数进行匹配，当数组传入的值和个数符合设定的规则，那么就执行该条语句后面的函数体/语句，案例如下：
+   * 				def getMatchCollection(msg: Array[String]){
+   * 						msg match{
+   * 								case Array("1") => println("One element")
+   * 										 }
+   *  						}
+   */
+  def getMatchCollection(msg: Array[String]){
+    msg match{
+      case Array("1") => println("One element")   //匹配数组里的值是否相等，并且只有一个元素的
+      case Array("1","2") => println("Two element")  //匹配数组里的值是否相等，并且只有两个元素的
+      case Array("1",_*) => println("Many element")  //匹配数组里的第一个值是否相等，并且有多个元素的
+      case _ => println("Unknow type")  //匹配数组里其他值的元素
+    }
+  }
+//---------------------------------------------------------------------------------------------------
+  
+  /**
+   * 4、对类进行匹配
+   * 		case class自动生成apply方法，省去了new的环节
+   */
+  def getBigDataType(data: DataFrameWork){
+    data match{
+      case ComputationFrameWork(name,popular) => println("ComputationFrameWork -->" + "name: " + name + ", popular: " + popular)
+      case StorageFrameWork(name,popular) => println("StorageFrameWork -->" + "name: " + name + ", popular: " + popular)
+      case _ =>println("Some other type!")
+    }
+  }
+  
+  /**
+   * 5、
+   */
+  def getValue(key: String,content: Map[String,String]){
+    content.get(key) match{
+      case Some(value) => println("getValue: " + value)
+      case None => println("Not Found!")
+    }
+  }
+}
