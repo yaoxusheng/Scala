@@ -1,0 +1,117 @@
+/**
+ * 1、在Scala的集合体系中Iterable是共同的Trait，Iterable要求继承者实现一些共同的方法，例如对元素的遍历等~
+ * 2、Array是基础的数据结构，它不属于Scala集合的体系；
+ * 3、Scala的集合体系分为：可变集合、不可变集合；（scala默认导入的是不可变的包）
+ * 	 	可变集合在：scala.collection.mutable包中
+ * 		不可变集合在：scala.collection.immutable包中
+ * 4、List是元素的列表集合，值是不可变的：
+ * 		一、List中head方法是提取出第一个元素，tail方法提取剩下的元素；
+ * 		二、使用“::”操作符把其他元素和List进行拼接，形成一个新的元素；
+ * 		三、如果集合中没有元素的话，调用集合中元素的时候就会返回Nil(没有值)
+ * 
+ * Set：set集合是无序的，并且元素不可重复(唯一)
+ * 
+ * 		1、scala.collection.mutable包下的Set是可变的，
+ * 			Set：元素唯一、无序、不可变
+ * 		2、scala.collection.immutable包下的Set是不可变的；
+ * 			HashSet：元素唯一、无序
+ * 			LinkedHashSet：元素唯一、有序(插入的顺序)；
+ * 			SortedSet：元素唯一、排序
+ * 
+ */
+object functional_Iterable {
+  def main(args: Array[String]): Unit = {
+    
+    //定义变量
+    val range = 1 to 10
+    println(range)
+    
+    //定义一个List集合，传入参数
+    val list = List(1,2,3,4,5)
+    println(list.head)  //打印List的第一个元素
+    println(list.tail)  //打印List的其余元素
+    
+    //::把元素和List集合进行拼接
+    val list1 = 0::list  
+    val list2 = list1::list 
+    println(list1)  //打印拼接后的集合
+    println(list2)  //打印拼接后的集合
+    
+    /**
+     * Nil
+     */
+    val nil = List(1)
+    println(nil.tail)//调用tail方法，集合中没有其他值了，返回的就是Nil
+    
+    /**
+     * 创建可变集合LinkedList:
+     * 		elme：LinkedList中的方法，获取集合中的第一个元素
+     *
+     */
+    var linkedList = scala.collection.mutable.LinkedList(1,2,3,4,5)
+    println(linkedList)
+    println("elem：" + linkedList.elem)
+    println("tail：" + linkedList.tail)
+    
+    //循环打印linkedList里面的元素，循环条件（当linkedList中有元素时循环）
+    while(linkedList != Nil){
+      println("循环linkedList头元素：" + linkedList.elem)    //打印linkedList集合中的第一个元素（头元素）
+      linkedList = linkedList.tail  //给linkedList赋值（把其余的值赋给linkedList）
+    }
+    println("被循环后的: " + linkedList + ",该集合是可以被修改元素的集合")
+    
+    var su = linkedList.+:(1)  //调用方法给linkedList添加一个元素
+    println("给linkedList添加一个元素后：" + su)  //在控制台打印添加元素后的集合
+    
+    
+    /**
+     * Set
+     */
+    val set = Set(2,1,1,3,4,5)  //Set集合中4个元素之内（包括4个元素）是有序的
+    println("Set里的元素是不可以重复的：" + set)
+    val s = set + 7  //这种方式可以给Set集合添加元素
+    println("获取集合所属类: " + s.getClass.getName)  //打印结果：scala.collection.immutable.HashSet$HashTrieSet
+    println("原：" + s)
+    println("drop：" + s.drop(1))
+    
+    val mSet = scala.collection.mutable.Set(1,2,3,4,5)
+    mSet += 6
+    println("mSet原：" + mSet)
+    println("mSet: " + mSet.getClass.getName)  //打印结果：scala.collection.mutable.HashSet
+    
+    val hashSet = scala.collection.mutable.HashSet(1,2,3,4,5,5)  //元素唯一、无序
+    println("HashSet: " + hashSet)
+    println("HadhSet: " + hashSet.getClass)  //scala.collection.mutable.HashSet
+    
+    val linkedHSet = scala.collection.mutable.LinkedHashSet(1,2,3,4,5,1)  //LinkedHashSet：里面的元素是有序、唯一的
+    println("LinkedHashSet: " + linkedHSet)
+    
+    val sortedSet = scala.collection.mutable.SortedSet("a","d","c")  //对集合中的元素进行排序、只可以存放同一种类型的元素
+    println("sortedSet：" + sortedSet)
+
+println("-------------------------------------------------------------------------------------------------------------------------")
+    
+    /**
+     * 集合上的函数式编程：
+     * 		函数式编程中都有Map和flatMap两个函数：
+     * 			1、函数Map：将一个函数传入到Map中，然后对传入函数集合中的每个元素进行处理，最后返回处理后的结果
+     * 			2、函数flatMap：和Map唯一的区别--> 这个函数在处理完后的返回值必须是List
+     */
+    /*
+     * flatMap： 调用“flatMap”函数对集合中的每个元素进行处理(以下是用空格切分)，处理完后返回的类型是List；
+     * map: 对切分后得知进行Tuple赋值,(x,1)-->Tuple[String,Integer]；
+     * map：提取Tuple中的第二个元素,x._1：访问第一个元素，x._2访问第二个元素.
+     * 
+     * 下面案例是：集合上的函数式编程
+     */
+    val l = List("What do you do ?").flatMap { x => x.split(" ") }.map { x => (x,1) }.map{x => x._2}.reduce(_+_)
+    println(l)  //打印处理完后的集合
+    val l1 = List("What do you do ?").flatMap { x => x.split(" ") }.map {(_,1) }.map{_._2}.reduce(_+_)  //这里的“_”代表了某元素
+    println(l1)
+    List(1 to 10: _*).foreach { println( _) }  //“_*”表示展开数据，“println( _)”只能在打印单个值的时候使用
+    List(1 to 10: _*).foreach { println _ }  //“_*”表示展开数据，“println _”只能在打印单个值的时候使用
+    List(1 to 10: _*).foreach { println}  //“_*”表示展开数据，“println”只能在打印单个值的时候使用
+    List(1 to 10: _*).foreach (println)  //“_*”表示展开数据，“(println)”只能在打印单个值的时候使用
+    
+  }
+}
